@@ -1,0 +1,44 @@
+﻿@using WNG_Sequences.WebUI.Models
+@model UserInput
+@{
+    ViewBag.Title = "Sequence Generator";
+}
+@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + ":" + formToken;                
+    }
+}
+
+<div>
+    <a href="@Url.Action("Help","Home")">About this tool</a>
+</div>
+<header>
+    <h1>Sequence Generator</h1>
+</header>
+<div id="main-content">
+    <form name="InputForm">
+        <div class="form-group">
+            <label>Enter a Number</label>
+            <input class="form-control" type="text" name="NumberToProcess" ng-model="InputNumber.InputNumber"/>
+            <input type="button" ng-click="GetSequences()" name="ProcessSequences" value="Get Sequences" />
+            <p ng-show="InputNumber.CustomValidation" class="field-validation-error">{{InputNumber.CustomValidationMessage}}</p>
+        </div>
+         <div id="processing">
+            <p align="center" style="padding:20px 0px;">Processing. Please Wait... </p>
+        </div>
+       <div ng-repeat="seq in Sequences">
+            <hr />
+            <div>
+                <label class="header-text">{{seq.SequenceName}} ({{seq.HelpText}})</label>
+                <p>{{seq.OutputSequence == "" ? "No Numbers" : seq.OutputSequence}}</p>
+            </div>
+        </div>
+    </form>
+</div>
+@section scripts{
+<script src="~/Scripts/app/Initialize.js"></script>
+    }
+

@@ -1,0 +1,55 @@
+@using System.Web.Http
+@using System.Web.Http.Description
+@using System.Collections.ObjectModel
+@using WNG_Sequences.Areas.HelpPage.Models
+@model Collection<ApiDescription>
+
+@{
+    ViewBag.Title = "Sequence Generator - User Help";
+
+    // Group APIs by controller
+    ILookup<string, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor.ControllerName);
+}
+<header>
+    <div class="content-wrapper">
+        <div class="float-left">
+            <h1>@ViewBag.Title</h1>
+        </div>
+    </div>
+</header>
+<div id="body">
+    <section class="featured">
+        <div class="content-wrapper">
+            <p>
+                This application generates the following sequences for a given number
+                <ul>
+                    <li>Numbers in incremental sequence of 1 starting from 1 to the number entered</li>
+                    <li>Even numbers from 1 to the number entered</li>
+                    <li>Odd numbers from 1 to the number entered</li>
+                    <li>Multiples of 3 (C), 5 (E) and both 3 & 5 (Z) from 1 to the number entered</li>
+                    <li>Fibonacci numbers starting from 1 to the number entered</li>
+                </ul>
+                Pl. note that the input number is restricted to accept a range of 1 to 5000.
+            </p>
+            <hr />
+            <p>
+                To use the tool:
+                <ul>
+                    <li>Enter a positive integer between range 1 to 5000</li>
+                    <li>Click "Get Sequences"</li>
+                    <li>The sequences mentioned above will be displayed as a comma seperated list</li>
+                </ul>
+            </p>
+        </div>
+    </section>
+    <section class="content-wrapper main-content clear-fix">
+        @foreach (var group in apiGroups)
+        {
+            @Html.DisplayFor(m => group, "ApiGroup")
+        }
+    </section>
+</div>
+
+@section Scripts {
+    <link type="text/css" href="~/Areas/HelpPage/HelpPage.css" rel="stylesheet" />
+}
